@@ -17,7 +17,7 @@ export default {
   entitiesTs: [path.join(process.cwd(), '**', '*.entity.ts')],
   user: 'root',
   password: 'root',
-  dbName: 'example',
+  dbName: 'CUREWIKI',
   host: 'localhost',
   port: 5432,
   ssl: false,
