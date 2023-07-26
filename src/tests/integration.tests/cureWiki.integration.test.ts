@@ -5,7 +5,7 @@ import { CureWikiService } from "../../services/curewiki.service/curewiki.servic
 import { TrialService } from "../../services/trial.service/trial.service"
 import ormConfig from "../../orm.config"
 
-describe('trial service tests', () => {
+describe('trial integration tests', () => {
     let trialService: TrialService
     let cureWikiService: CureWikiService
     let orm: MikroORM<PostgreSqlDriver>
