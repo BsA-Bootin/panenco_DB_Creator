@@ -3,5 +3,5 @@ import { App } from './app';
 (async () => {
   const app = new App();
   await app.createConnection();
-  app.run();
+  await app.run();
 })();

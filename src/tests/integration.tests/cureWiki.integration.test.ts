@@ -1,25 +1,26 @@
-import { expect } from "chai"
-import { MikroORM } from "@mikro-orm/core"
-import { PostgreSqlDriver } from "@mikro-orm/postgresql"
-import { CureWikiService } from "../../services/curewiki.service/curewiki.service"
-import { TrialService } from "../../services/trial.service/trial.service"
-import ormConfig from "../../orm.config"
+import { expect } from 'chai';
+import { MikroORM } from '@mikro-orm/core';
+import { CureWikiService } from '../../services/curewiki.service/curewiki.service';
+import { TrialService } from '../../services/trial.service/trial.service';
+import ormConfig from '../../orm.config';
+import { IntegrationTestBase } from '../utils/integrationTestBase';
+import supertest from 'supertest';
 
 describe('trial integration tests', () => {
-    let trialService: TrialService
-    let cureWikiService: CureWikiService
-    let orm: MikroORM<PostgreSqlDriver>
-    before(async () => {
-        trialService = new TrialService;
-        cureWikiService = new CureWikiService;
-        orm = await MikroORM.init(ormConfig);
-        await orm.em.execute(`DROP SCHEMA public CASCADE; CREATE SCHEMA public;`);
-        await orm.getMigrator().up();
-    })
+  let base: IntegrationTestBase;
+  let request: supertest.SuperTest<supertest.Test>;
 
-    it('getAllTrials test',async () => {
-        const res = await trialService.getAllTrials(5,4);
-        expect(res.length).equals(25);
-        await cureWikiService.storeTrials(res, orm);
-    })
-})
+  before(async () => {
+    base = new IntegrationTestBase();
+    request = await base.getRequestForAllRouters();
+    await base.before();
+  });
+
+  beforeEach(() => base.beforeEach());
+
+  it('store and get one batch test', async () => {
+    const res = await IntegrationTestBase.app.trialService.getTrialBatch(1);
+    expect(res.studies.length).equals(1);
+    await IntegrationTestBase.app.cureWikiService.storeTrials(res.studies);
+  });
+});
