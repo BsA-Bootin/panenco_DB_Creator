@@ -1,14 +1,24 @@
-import { BaseEntity, Entity, PrimaryKey, Property } from '@mikro-orm/core';
-import { v4 } from 'uuid';
+import { BaseEntity, Collection, Entity, ManyToOne, OneToMany, PrimaryKey, Property } from '@mikro-orm/core';
+import { ICDCode } from './icdcodes.entity';
+import { Location } from './locations.entity';
 
 @Entity()
 export class Trial extends BaseEntity<Trial, 'nctId'> {
   @PrimaryKey()
   public nctId: string;
 
-  @Property({type: 'text'})
-  public title: string;
+  @Property({ type: 'text' })
+  public officialTitle: string;
+
+  @Property({ type: 'text' })
+  public briefTitle: string;
 
   @Property()
-  public ICD_code: string = "not yet generated";
+  public status: string;
+
+  @OneToMany(() => ICDCode, (t) => t.trial)
+  public icdCodes = new Collection<ICDCode>(this);
+
+  @OneToMany(() => Location, (t) => t.trial)
+  public locations = new Collection<Location>(this);
 }

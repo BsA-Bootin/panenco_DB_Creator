@@ -16,12 +16,16 @@ export class TrialService {
   }
 
   private async getRawStudies(batchSize: number, pageToken?: string) {
+    const filterParams = {
+      'query.locn': 'Belgium',
+    };
     let count = 0;
     while (count < MAX_RETRIES) {
       const response = await axios.get(CLINICAL_URL, {
         params: {
           pageSize: batchSize,
           ...(pageToken ? { pageToken } : {}),
+          ...filterParams,
         },
       });
       if (response.status !== 200) {
@@ -34,16 +38,15 @@ export class TrialService {
   }
 
   private getStudyInfo(study: any): StudyInfo {
-    const generalInfo = {
+    const conditionsInfo = {
       conditions: study.protocolSection.conditionsModule.conditions,
       keywords: study.protocolSection.conditionsModule.keywords,
     };
 
-    const trialInfo = study.protocolSection.identificationModule;
+    const generalInfo = study.protocolSection.identificationModule;
     const status = study.protocolSection.statusModule.overallStatus;
-    const locationArray = new Array(study.protocolSection.contactsLocationsModule.locations);
-    const locations = locationArray.filter((i: any) => !!i).map((l: any) => l.country);
+    const locations = study.protocolSection.contactsLocationsModule.locations;
 
-    return { generalInfo, trialInfo, status, locations };
+    return { generalInfo, conditionsInfo, status, locations };
   }
 }

@@ -1,9 +1,9 @@
 import supertest from 'supertest';
-import { App } from '../../app';
 import type * as express from 'express';
 import { MockedServiceWorker, type Options as ServiceWorkerOptions } from './mockedServiceWorker';
-import { TestDbDataService } from './testDBDataService';
 import Container from '../../utils/helpers/container';
+import { TestDbDataService } from './testDBDataService';
+import { App } from '../../app';
 
 type Options = {
   serviceWorker?: ServiceWorkerOptions;

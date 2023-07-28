@@ -18,15 +18,18 @@
     ]
   },
   "dependencies": {
-    "@mikro-orm/cli": "^5.7.13",
-    "@mikro-orm/core": "^5.7.13",
-    "@mikro-orm/migrations": "^5.7.13",
-    "@mikro-orm/postgresql": "^5.7.13",
+    "@mikro-orm/cli": "^5.7.14",
+    "@mikro-orm/core": "^5.7.14",
+    "@mikro-orm/migrations": "^5.7.14",
+    "@mikro-orm/postgresql": "^5.7.14",
     "@mswjs/interceptors": "^0.23.0",
+    "@panenco/papi": "^1.4.1",
     "@types/uuid": "^9.0.2",
     "axios": "^1.4.0",
     "class-validator-jsonschema": "^5.0.0",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
+    "routing-controllers": "^0.10.4",
     "routing-controllers-openapi": "^4.0.0",
     "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.0"

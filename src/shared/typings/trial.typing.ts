@@ -1,4 +1,4 @@
-export interface GeneralInfo {
+export interface ConditionsInfo {
   conditions: string[];
   keywords: string[];
 }
@@ -12,7 +12,7 @@ export interface Organization {
   class: string;
 }
 
-export interface TrialInfo {
+export interface GeneralInfo {
   nctId: string;
   orgStudyIdInfo: OrgStudyIdInfo;
   organization: Organization;
@@ -21,13 +21,21 @@ export interface TrialInfo {
   acronym: string;
 }
 
+type Location = {
+  facility: string;
+  city: string;
+  state: string;
+  zip: string;
+  country: string;
+};
+
 export interface StudyInfo {
   generalInfo: GeneralInfo;
-  trialInfo: TrialInfo;
+  conditionsInfo: ConditionsInfo;
   status: string;
-  locations: string[];
+  locations: Location[];
 }
 
-export interface aiStudyInfo extends StudyInfo {
-  icd10Code: string;
+export interface StudyInfoComplete extends StudyInfo {
+  icdCodes: string[];
 }
