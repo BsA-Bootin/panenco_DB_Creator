@@ -17,7 +17,7 @@ export class TrialService {
 
   private async getRawStudies(batchSize: number, pageToken?: string) {
     const filterParams = {
-      'query.locn': 'Belgium',
+      'query.locn': 'antwerp',
     };
     let count = 0;
     while (count < MAX_RETRIES) {

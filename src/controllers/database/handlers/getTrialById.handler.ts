@@ -4,6 +4,6 @@ import Container from '../../../utils/helpers/container';
 
 export const getTrialById = async (trialId: string) => {
   const em = Container.getEm();
-  const trial = await em.findOneOrFail(Trial, { nctId: trialId });
+  const trial = await em.findOneOrFail(Trial, { id: trialId });
   return trial;
 };

@@ -8,10 +8,10 @@ import { ICDCode } from '../../entities/icdcodes.entity';
 
 export class CureWikiService {
   public async storeTrials(trials: StudyInfoComplete[]) {
-    const em = Container.getEm();
+    const em = Container.getEm().fork();
     trials.forEach((element) => {
       const trialEntityBody = {
-        nctId: element.generalInfo.nctId,
+        id: element.generalInfo.nctId,
         officialTitle: element.generalInfo.officialTitle,
         briefTitle: element.generalInfo.briefTitle,
         status: element.status,
@@ -22,7 +22,7 @@ export class CureWikiService {
       element.icdCodes.forEach((icdCode) => {
         const icdCodeEntityBody = {
           icdCode: icdCode,
-          trial: trialEntity,
+          trial: trialEntity.id,
         };
         const icdCodeEntity = em.create(ICDCode, icdCodeEntityBody);
         em.persist(icdCodeEntity);
@@ -30,10 +30,10 @@ export class CureWikiService {
 
       element.locations.forEach((location) => {
         const locationsEntityBody = {
-          country: location.country,
+          country: location.country.toLowerCase(),
           zip: location.zip,
-          city: location.city,
-          trial: trialEntity,
+          city: location.city.toLowerCase(),
+          trial: trialEntity.id,
         };
         const locationEntity = em.create(Location, locationsEntityBody);
         em.persist(locationEntity);

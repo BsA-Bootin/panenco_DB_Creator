@@ -2,13 +2,14 @@ import { MikroORM, RequestContext } from '@mikro-orm/core';
 import { PostgreSqlDriver } from '@mikro-orm/postgresql';
 import express, { Application } from 'express';
 import ormConfig from './orm.config';
-import { TrialService } from './services/trial.service/trial.service';
-import { CureWikiService } from './services/curewiki.service/curewiki.service';
+import { TrialService } from './components/trial.component/trial.component';
+import { CureWikiService } from './components/curewiki.component/curewiki.component';
 import { NextFunction, Request, Response } from 'express';
 import Container from './utils/helpers/container';
-import { AIService } from './services/ai.service/ai.service';
+import { AIService } from './components/ai.component/ai.component';
 import { useExpressServer } from 'routing-controllers';
-import { TrialController } from './controllers/database/database.controller';
+import { TrialController } from './controllers/database/trial.controller';
+import 'reflect-metadata';
 
 export class App {
   host: Application;
@@ -19,7 +20,7 @@ export class App {
   public app: express.Application;
 
   constructor() {
-    this.app = express();
+    this.host = express();
     this.host.use(express.json());
 
     this.host.use((req: Request, res: Response, next: NextFunction) => {
@@ -58,7 +59,7 @@ export class App {
   }
 
   public async run() {
-    const rawBatch = await this.trialService.getTrialBatch(2);
+    const rawBatch = await this.trialService.getTrialBatch(1);
     console.log('Fetched batch');
     const processedBatch = this.aiService.addIcdCodes(rawBatch.studies);
     console.log('Processed batch');

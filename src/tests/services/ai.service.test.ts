@@ -1,5 +1,6 @@
-import { AIService } from '../../services/ai.service/ai.service';
+import { AIService } from '../../components/ai.component/ai.component';
 import { expect } from 'chai';
+import { study } from './information/ai.service.test.information';
 
 describe('ai service tests', () => {
   const aiService = new AIService();
@@ -9,10 +10,10 @@ describe('ai service tests', () => {
     expect(processedCondition).equals('triple negative breast cancer');
   });
 
-  //   it('requestIcdCodes works as expected', () => {
-  //     const requestedIcdCodes = aiService.requestIcdCodes('triple negative breast cancer');
-  //     expect(requestedIcdCodes).equals(true);
-  //   });
+  it('getIcdCodes works as expected', () => {
+    const icdCodes = aiService.getIcdCodes(study);
+    expect(icdCodes[0]).equals('H91');
+  });
 });
 
 const conditionsModule = { conditions: ['Triple Negative Breast Cancer'] };

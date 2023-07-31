@@ -10,6 +10,6 @@ export class ICDCode extends BaseEntity<ICDCode, 'id'> {
   @Property()
   public icdCode: string;
 
-  @ManyToOne()
+  @ManyToOne(() => Trial)
   public trial: Trial;
 }

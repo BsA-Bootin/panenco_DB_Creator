@@ -3,9 +3,9 @@ import { ICDCode } from './icdcodes.entity';
 import { Location } from './locations.entity';
 
 @Entity()
-export class Trial extends BaseEntity<Trial, 'nctId'> {
+export class Trial extends BaseEntity<Trial, 'id'> {
   @PrimaryKey()
-  public nctId: string;
+  public id: string;
 
   @Property({ type: 'text' })
   public officialTitle: string;

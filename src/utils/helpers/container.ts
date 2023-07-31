@@ -9,6 +9,6 @@ export default class Container {
   }
 
   public static getEm() {
-    return this.em.fork();
+    return this.em;
   }
 }

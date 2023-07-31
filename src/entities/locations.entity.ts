@@ -16,6 +16,6 @@ export class Location extends BaseEntity<Location, 'id'> {
   @Property()
   public city: string = 'undefined';
 
-  @ManyToOne()
+  @ManyToOne(() => Trial)
   public trial: Trial;
 }

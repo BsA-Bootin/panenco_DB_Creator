@@ -12,7 +12,7 @@ export class AIService {
     return completeStudies;
   }
 
-  private getIcdCodes(study: StudyInfo): string[] {
+  public getIcdCodes(study: StudyInfo): string[] {
     let icdCodes: string[] = [];
     study.conditionsInfo.conditions.forEach((condition) => {
       const processedCondition = this.preProcessConditions(condition);
@@ -29,7 +29,8 @@ export class AIService {
   }
 
   public processMedicalCondition(medicalCondition: MedicalCondition): string {
-    return medicalCondition.ICD10CMConcepts[0].Code;
+    const icdCode = medicalCondition.ICD10CMConcepts[0].Code;
+    return icdCode.substring(0, icdCode.indexOf('.'));
   }
 
   public requestMedicalConditions(condition: string): MedicalConditions | undefined {
