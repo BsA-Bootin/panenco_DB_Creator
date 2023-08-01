@@ -5,7 +5,7 @@ import { IsString } from 'class-validator';
 export class TrialView {
   @Expose()
   @IsString()
-  public nctId: string;
+  public id: string;
 
   @Expose()
   @IsString()

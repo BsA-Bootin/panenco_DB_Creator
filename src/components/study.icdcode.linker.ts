@@ -1,15 +1,17 @@
-import { MedicalCondition, MedicalConditions } from '../../shared/typings/awsService.typing';
-import { StudyInfo, StudyInfoComplete } from '../../shared/typings/trial.typing';
+import { MedicalCondition, MedicalConditions } from '../shared/typings/awsService.typing';
+import { StudyInfo, StudyInfoComplete } from '../shared/typings/trial.typing';
 import * as fs from 'fs';
 
-export class AIService {
+/**
+ * Links studies to icdCodes based on a predefined JSON file.
+ */
+export class StudyIcdCodeLinker {
+  /**
+   * @param studies
+   * @returns the studies but with an additional list for ICDCodes.
+   */
   public addIcdCodes(studies: StudyInfo[]): StudyInfoComplete[] {
-    let completeStudies: StudyInfoComplete[] = [];
-    studies.forEach((study) => {
-      const icdCodes: string[] = this.getIcdCodes(study);
-      completeStudies.push({ ...study, icdCodes: icdCodes });
-    });
-    return completeStudies;
+    return studies.map((study) => ({ ...study, icdCodes: this.getIcdCodes(study) }));
   }
 
   public getIcdCodes(study: StudyInfo): string[] {
@@ -21,8 +23,6 @@ export class AIService {
         outputMedicalConditions.forEach((medicalCondition) => {
           icdCodes.push(this.processMedicalCondition(medicalCondition));
         });
-      } else {
-        icdCodes.push('Condition has not been found');
       }
     });
     return icdCodes;
@@ -44,6 +44,6 @@ export class AIService {
   }
 
   public preProcessConditions(condition: string): string {
-    return condition.toLowerCase().replace('(', ' ').replace(')', ' ').replace('\t', ' ').trim();
+    return condition.toLowerCase().replace(/\(/g, ' ').replace(/\)/g, ' ').replace(/\t/g, ' ').trim();
   }
 }

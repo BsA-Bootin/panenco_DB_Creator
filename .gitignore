@@ -2,3 +2,4 @@
 /build
 /src/create.migration
 /yarn-error.log
+/src/migrations/.snapshot-CUREWIKI.json

@@ -2,22 +2,22 @@ import { MikroORM, RequestContext } from '@mikro-orm/core';
 import { PostgreSqlDriver } from '@mikro-orm/postgresql';
 import express, { Application } from 'express';
 import ormConfig from './orm.config';
-import { TrialService } from './components/trial.component/trial.component';
-import { CureWikiService } from './components/curewiki.component/curewiki.component';
 import { NextFunction, Request, Response } from 'express';
 import Container from './utils/helpers/container';
-import { AIService } from './components/ai.component/ai.component';
 import { useExpressServer } from 'routing-controllers';
 import { TrialController } from './controllers/database/trial.controller';
 import 'reflect-metadata';
+import { TrialRetriever } from './components/trial.retriever';
+import { CureWikiDatabaseStore } from './utils/helpers/curewiki.database.store';
+import { StudyIcdCodeLinker } from './components/study.icdcode.linker';
 
 export class App {
   host: Application;
-  public orm: MikroORM<PostgreSqlDriver>;
-  trialService: TrialService;
-  cureWikiService: CureWikiService;
-  aiService: AIService;
-  public app: express.Application;
+  orm: MikroORM<PostgreSqlDriver>;
+  trialRetriever: TrialRetriever;
+  cureWikiDatabaseStore: CureWikiDatabaseStore;
+  studyIcdCodeLinker: StudyIcdCodeLinker;
+  app: express.Application;
 
   constructor() {
     this.host = express();
@@ -30,9 +30,9 @@ export class App {
 
     this.initializeControllers([TrialController]);
 
-    this.trialService = new TrialService();
-    this.cureWikiService = new CureWikiService();
-    this.aiService = new AIService();
+    this.trialRetriever = new TrialRetriever();
+    this.cureWikiDatabaseStore = new CureWikiDatabaseStore();
+    this.studyIcdCodeLinker = new StudyIcdCodeLinker();
   }
 
   public async createConnection() {
@@ -59,11 +59,11 @@ export class App {
   }
 
   public async run() {
-    const rawBatch = await this.trialService.getTrialBatch(1);
+    const rawBatch = await this.trialRetriever.getTrialBatch(1);
     console.log('Fetched batch');
-    const processedBatch = this.aiService.addIcdCodes(rawBatch.studies);
+    const processedBatch = this.studyIcdCodeLinker.addIcdCodes(rawBatch.studies);
     console.log('Processed batch');
-    await this.cureWikiService.storeTrials(processedBatch);
+    await this.cureWikiDatabaseStore.storeTrials(processedBatch);
     console.log('Done');
   }
 }

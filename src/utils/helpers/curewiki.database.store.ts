@@ -2,11 +2,18 @@ import { MikroORM, RequestContext } from '@mikro-orm/core';
 import { PostgreSqlDriver } from '@mikro-orm/postgresql';
 import { Trial } from '../../entities/trial.entity';
 import { Location } from '../../entities/locations.entity';
-import Container from '../../utils/helpers/container';
+import Container from './container';
 import { StudyInfoComplete } from '../../shared/typings/trial.typing';
 import { ICDCode } from '../../entities/icdcodes.entity';
 
-export class CureWikiService {
+/**
+ * Stores the data in the CureWikiDatabase
+ */
+export class CureWikiDatabaseStore {
+  /**
+   * stores studyInfoComplete types in the database.
+   * @param trials
+   */
   public async storeTrials(trials: StudyInfoComplete[]) {
     const em = Container.getEm().fork();
     trials.forEach((element) => {
@@ -21,7 +28,7 @@ export class CureWikiService {
 
       element.icdCodes.forEach((icdCode) => {
         const icdCodeEntityBody = {
-          icdCode: icdCode,
+          value: icdCode,
           trial: trialEntity.id,
         };
         const icdCodeEntity = em.create(ICDCode, icdCodeEntityBody);

@@ -21,7 +21,7 @@ export class TestDbDataService {
     });
     await em.persistAndFlush(trials);
     const newtrials = new TrialFactory(em).make(3, {
-      icdCodes: [{ icdCode: '123' }],
+      icdCodes: [{ value: '123' }],
       locations: [{ country: 'belgium' }],
     });
     await em.persistAndFlush(newtrials);
@@ -42,7 +42,6 @@ export class TestDbDataService {
     await this.loadTransactionalFixtures();
 
     this.originalEm = Container.getEm();
-    this.originalEm.clear();
     const forkedEm = this.originalEm.fork();
 
     await forkedEm.begin({ ctx: this.originalEm.getTransactionContext() });

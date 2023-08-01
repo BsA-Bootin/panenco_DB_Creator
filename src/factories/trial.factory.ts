@@ -14,7 +14,7 @@ export class TrialFactory extends BaseFactory<Trial> {
       city: faker.location.city(),
     };
     const icdCodeEntity = {
-      icdCode: faker.string.alpha(),
+      value: faker.string.alpha(),
     };
     return {
       id: faker.string.uuid(),
