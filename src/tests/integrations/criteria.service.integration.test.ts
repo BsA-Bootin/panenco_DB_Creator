@@ -37,14 +37,14 @@ describe('trial integration tests', () => {
     const [trials, count] = await em.findAndCount(
       Trial,
       {},
-      { populate: ['locations.country', 'locations.city', 'icdCodes.icdCode'] }
+      { populate: ['locations.country', 'locations.city', 'icdCodes.value'] }
     );
     expect(count).equals(originalCount + 2);
     expect(trials.some((trial) => trial.id === 'NCT03630471'));
     expect(trials.some((trial) => trial.id === 'NCT03841708'));
     expect(trials.some((trial) => trial.locations[0].country === 'india'));
     expect(trials.some((trial) => trial.locations[0].city === 'bruxelles'));
-    const icdCount = await em.count(ICDCode, { icdCode: 'I46' });
+    const icdCount = await em.count(ICDCode, { value: 'I46' });
     expect(icdCount).equals(1);
   });
 });
