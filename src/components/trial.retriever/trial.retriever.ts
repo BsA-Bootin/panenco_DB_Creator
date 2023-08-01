@@ -3,12 +3,22 @@ import { StudyInfo } from '../../shared/typings/trial.typing';
 
 const CLINICAL_URL = 'https://clinicaltrials.gov/api/v2/studies';
 const MAX_RETRIES = 3;
-export class TrialService {
-  public async getTrial(id: string) {
+
+/**
+ * Fetches trials from the remote gov database
+ */
+export class TrialRetriever {
+  public async getTrialById(id: string) {
     const response = await axios.get(`${CLINICAL_URL}/${id}`);
-    return response;
+    return this.getStudyInfo(response);
   }
 
+  /**
+   * Fetches trials in batches
+   * @param batchSize
+   * @param pageToken
+   * @returns {string, StudyInfo[]} where the first string is the pageToken for the next page.
+   */
   public async getTrialBatch(batchSize: number, pageToken?: string) {
     const { rawStudies, nextPageToken } = await this.getRawStudies(batchSize, pageToken);
     const studies = rawStudies.map(this.getStudyInfo);
@@ -17,7 +27,7 @@ export class TrialService {
 
   private async getRawStudies(batchSize: number, pageToken?: string) {
     const filterParams = {
-      'query.locn': 'antwerp',
+      'query.locn': 'belgium',
     };
     let count = 0;
     while (count < MAX_RETRIES) {

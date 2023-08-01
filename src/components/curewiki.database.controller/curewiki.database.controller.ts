@@ -6,7 +6,14 @@ import Container from '../../utils/helpers/container';
 import { StudyInfoComplete } from '../../shared/typings/trial.typing';
 import { ICDCode } from '../../entities/icdcodes.entity';
 
-export class CureWikiService {
+/**
+ * Controls the database for the Criteria Service
+ */
+export class CureWikiDatabaseController {
+  /**
+   * stores studyInfoComplete types in the database.
+   * @param trials
+   */
   public async storeTrials(trials: StudyInfoComplete[]) {
     const em = Container.getEm().fork();
     trials.forEach((element) => {
@@ -21,7 +28,7 @@ export class CureWikiService {
 
       element.icdCodes.forEach((icdCode) => {
         const icdCodeEntityBody = {
-          icdCode: icdCode,
+          value: icdCode,
           trial: trialEntity.id,
         };
         const icdCodeEntity = em.create(ICDCode, icdCodeEntityBody);

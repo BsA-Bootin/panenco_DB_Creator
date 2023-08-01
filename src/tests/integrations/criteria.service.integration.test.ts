@@ -29,11 +29,11 @@ describe('trial integration tests', () => {
 
   it('store and get one batch test', async () => {
     const em = Container.getEm();
-    const unProcessedTrials = await IntegrationTestBase.app.trialService.getTrialBatch(2);
+    const unProcessedTrials = await IntegrationTestBase.app.trialRetriever.getTrialBatch(2);
     expect(unProcessedTrials.studies.length).equals(2);
-    const processedTrials = IntegrationTestBase.app.aiService.addIcdCodes(unProcessedTrials.studies);
+    const processedTrials = IntegrationTestBase.app.studyIcdCodeLinker.addIcdCodes(unProcessedTrials.studies);
     const originalCount = await em.count(Trial);
-    await IntegrationTestBase.app.cureWikiService.storeTrials(processedTrials);
+    await IntegrationTestBase.app.cureWikiDatabaseController.storeTrials(processedTrials);
     const [trials, count] = await em.findAndCount(
       Trial,
       {},
@@ -44,7 +44,7 @@ describe('trial integration tests', () => {
     expect(trials.some((trial) => trial.id === 'NCT03841708'));
     expect(trials.some((trial) => trial.locations[0].country === 'india'));
     expect(trials.some((trial) => trial.locations[0].city === 'bruxelles'));
-    expect(trials.some((trial) => trial.icdCodes[0].icdCode === 'I46'));
-    expect(trials.some((trial) => trial.icdCodes[0].icdCode === 'Condition has not been found'));
+    const icdCount = await em.count(ICDCode, { icdCode: 'I46' });
+    expect(icdCount).equals(1);
   });
 });

@@ -5,7 +5,7 @@ import type { PartialDeep } from 'type-fest';
 import { BatchInterceptor, type HttpRequestEventMap } from '@mswjs/interceptors';
 import { ClientRequestInterceptor } from '@mswjs/interceptors/ClientRequest';
 import { XMLHttpRequestInterceptor } from '@mswjs/interceptors/XMLHttpRequest';
-import { clinicalTrialsGovHandlers } from '../mocks/handlers/clinicalTrialsGov.handler';
+import { clinicalTrialsGovHandlers } from '../mocks/clinicalTrialsGov.handler';
 
 /**
  * union of all handlers

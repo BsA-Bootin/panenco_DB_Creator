@@ -2,14 +2,20 @@ import { MedicalCondition, MedicalConditions } from '../../shared/typings/awsSer
 import { StudyInfo, StudyInfoComplete } from '../../shared/typings/trial.typing';
 import * as fs from 'fs';
 
-export class AIService {
+/**
+ * Links studies to icdCodes based on a predefined JSON file.
+ */
+export class StudyIcdCodeLinker {
+  /**
+   * @param studies
+   * @returns the studies but with an additional list for ICDCodes.
+   */
   public addIcdCodes(studies: StudyInfo[]): StudyInfoComplete[] {
-    let completeStudies: StudyInfoComplete[] = [];
-    studies.forEach((study) => {
+    return studies.map((study) => {
       const icdCodes: string[] = this.getIcdCodes(study);
-      completeStudies.push({ ...study, icdCodes: icdCodes });
+      const completeStudy: StudyInfoComplete = { ...study, icdCodes: icdCodes };
+      return completeStudy;
     });
-    return completeStudies;
   }
 
   public getIcdCodes(study: StudyInfo): string[] {
@@ -21,8 +27,6 @@ export class AIService {
         outputMedicalConditions.forEach((medicalCondition) => {
           icdCodes.push(this.processMedicalCondition(medicalCondition));
         });
-      } else {
-        icdCodes.push('Condition has not been found');
       }
     });
     return icdCodes;
