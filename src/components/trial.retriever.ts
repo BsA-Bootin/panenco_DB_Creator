@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { StudyInfo } from '../../shared/typings/trial.typing';
+import { StudyInfo } from '../shared/typings/trial.typing';
 
 const CLINICAL_URL = 'https://clinicaltrials.gov/api/v2/studies';
 const MAX_RETRIES = 3;

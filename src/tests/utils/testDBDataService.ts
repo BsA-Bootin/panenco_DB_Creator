@@ -42,7 +42,6 @@ export class TestDbDataService {
     await this.loadTransactionalFixtures();
 
     this.originalEm = Container.getEm();
-    this.originalEm.clear();
     const forkedEm = this.originalEm.fork();
 
     await forkedEm.begin({ ctx: this.originalEm.getTransactionContext() });

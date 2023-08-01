@@ -2,14 +2,14 @@ import { MikroORM, RequestContext } from '@mikro-orm/core';
 import { PostgreSqlDriver } from '@mikro-orm/postgresql';
 import { Trial } from '../../entities/trial.entity';
 import { Location } from '../../entities/locations.entity';
-import Container from '../../utils/helpers/container';
+import Container from './container';
 import { StudyInfoComplete } from '../../shared/typings/trial.typing';
 import { ICDCode } from '../../entities/icdcodes.entity';
 
 /**
- * Controls the database for the Criteria Service
+ * Stores the data in the CureWikiDatabase
  */
-export class CureWikiDatabaseController {
+export class CureWikiDatabaseStore {
   /**
    * stores studyInfoComplete types in the database.
    * @param trials

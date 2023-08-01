@@ -1,6 +1,6 @@
-import { StudyIcdCodeLinker } from '../../components/study.icdcode.linker/study.icdcode.linker';
 import { expect } from 'chai';
 import { study } from './information/ai.service.test.information';
+import { StudyIcdCodeLinker } from '../../components/study.icdcode.linker';
 
 describe('ai service tests', () => {
   const studyIcdCodeLinker = new StudyIcdCodeLinker();

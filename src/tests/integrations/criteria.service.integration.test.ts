@@ -33,7 +33,7 @@ describe('trial integration tests', () => {
     expect(unProcessedTrials.studies.length).equals(2);
     const processedTrials = IntegrationTestBase.app.studyIcdCodeLinker.addIcdCodes(unProcessedTrials.studies);
     const originalCount = await em.count(Trial);
-    await IntegrationTestBase.app.cureWikiDatabaseController.storeTrials(processedTrials);
+    await IntegrationTestBase.app.cureWikiDatabaseStore.storeTrials(processedTrials);
     const [trials, count] = await em.findAndCount(
       Trial,
       {},

@@ -1,5 +1,5 @@
-import { MedicalCondition, MedicalConditions } from '../../shared/typings/awsService.typing';
-import { StudyInfo, StudyInfoComplete } from '../../shared/typings/trial.typing';
+import { MedicalCondition, MedicalConditions } from '../shared/typings/awsService.typing';
+import { StudyInfo, StudyInfoComplete } from '../shared/typings/trial.typing';
 import * as fs from 'fs';
 
 /**
@@ -11,11 +11,7 @@ export class StudyIcdCodeLinker {
    * @returns the studies but with an additional list for ICDCodes.
    */
   public addIcdCodes(studies: StudyInfo[]): StudyInfoComplete[] {
-    return studies.map((study) => {
-      const icdCodes: string[] = this.getIcdCodes(study);
-      const completeStudy: StudyInfoComplete = { ...study, icdCodes: icdCodes };
-      return completeStudy;
-    });
+    return studies.map((study) => ({ ...study, icdCodes: this.getIcdCodes(study) }));
   }
 
   public getIcdCodes(study: StudyInfo): string[] {
@@ -48,6 +44,6 @@ export class StudyIcdCodeLinker {
   }
 
   public preProcessConditions(condition: string): string {
-    return condition.toLowerCase().replace('(', ' ').replace(')', ' ').replace('\t', ' ').trim();
+    return condition.toLowerCase().replace(/\(/g, ' ').replace(/\)/g, ' ').replace(/\t/g, ' ').trim();
   }
 }

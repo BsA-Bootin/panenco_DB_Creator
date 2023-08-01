@@ -7,15 +7,15 @@ import Container from './utils/helpers/container';
 import { useExpressServer } from 'routing-controllers';
 import { TrialController } from './controllers/database/trial.controller';
 import 'reflect-metadata';
-import { TrialRetriever } from './components/trial.retriever/trial.retriever';
-import { CureWikiDatabaseController } from './components/curewiki.database.controller/curewiki.database.controller';
-import { StudyIcdCodeLinker } from './components/study.icdcode.linker/study.icdcode.linker';
+import { TrialRetriever } from './components/trial.retriever';
+import { CureWikiDatabaseStore } from './utils/helpers/curewiki.database.store';
+import { StudyIcdCodeLinker } from './components/study.icdcode.linker';
 
 export class App {
   host: Application;
   orm: MikroORM<PostgreSqlDriver>;
   trialRetriever: TrialRetriever;
-  cureWikiDatabaseController: CureWikiDatabaseController;
+  cureWikiDatabaseStore: CureWikiDatabaseStore;
   studyIcdCodeLinker: StudyIcdCodeLinker;
   app: express.Application;
 
@@ -31,7 +31,7 @@ export class App {
     this.initializeControllers([TrialController]);
 
     this.trialRetriever = new TrialRetriever();
-    this.cureWikiDatabaseController = new CureWikiDatabaseController();
+    this.cureWikiDatabaseStore = new CureWikiDatabaseStore();
     this.studyIcdCodeLinker = new StudyIcdCodeLinker();
   }
 
@@ -63,7 +63,7 @@ export class App {
     console.log('Fetched batch');
     const processedBatch = this.studyIcdCodeLinker.addIcdCodes(rawBatch.studies);
     console.log('Processed batch');
-    await this.cureWikiDatabaseController.storeTrials(processedBatch);
+    await this.cureWikiDatabaseStore.storeTrials(processedBatch);
     console.log('Done');
   }
 }
